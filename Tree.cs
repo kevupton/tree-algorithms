@@ -49,7 +49,7 @@ namespace TreeAlgorithms
             }
             else
             {
-                insertNode(root);
+                insertNode(node);
             }
         }
 
@@ -95,7 +95,7 @@ namespace TreeAlgorithms
 
             traverseInOrder(list, node.Left);
             list.Add(node.Value);
-            traverseInOrder(list, node.Left);
+            traverseInOrder(list, node.Right);
         }
 
         private void traversePostOrder(List<int> list, Node node)
@@ -103,7 +103,7 @@ namespace TreeAlgorithms
             if (node == null) return;
 
             traversePostOrder(list, node.Left);
-            traversePostOrder(list, node.Left);
+            traversePostOrder(list, node.Right);
             list.Add(node.Value);
         }
 
@@ -113,7 +113,53 @@ namespace TreeAlgorithms
 
             list.Add(node.Value);
             traversePreOrder(list, node.Left);
-            traversePreOrder(list, node.Left);
+            traversePreOrder(list, node.Right);
+        }
+
+        protected Tuple<Node, Node> depthFirstSearch (int nb)
+        {
+            var stack = new Stack<Tuple<Node, Node>>();
+            stack.Push(new Tuple<Node, Node>(root, null));
+
+            while (stack.Count > 0)
+            {
+                var tuple = stack.Pop();
+                
+                if (tuple.Item1.Value == nb)
+                {
+                    return tuple;
+                }
+                else
+                {
+                    if (tuple.Item1.HasRight) stack.Push(new Tuple<Node, Node>(tuple.Item1.Right, tuple.Item1));
+                    if (tuple.Item1.HasLeft) stack.Push(new Tuple<Node, Node>(tuple.Item1.Left, tuple.Item1));
+                }
+            }
+
+            return null;
+        }
+
+        protected Tuple<Node, Node> breadthFirstSearch (int nb)
+        {
+            var queue = new Queue<Tuple<Node, Node>>();
+            queue.Enqueue(new Tuple<Node, Node>(root, null));
+
+            while (queue.Count > 0)
+            {
+                var tuple = queue.Dequeue();
+
+                if (tuple.Item1.Value == nb)
+                {
+                    return tuple;
+                }
+                else
+                {
+                    if (tuple.Item1.HasLeft) queue.Enqueue(new Tuple<Node, Node>(tuple.Item1.Left, tuple.Item1));
+                    if (tuple.Item1.HasRight) queue.Enqueue(new Tuple<Node, Node>(tuple.Item1.Right, tuple.Item1));
+                }
+            }
+
+            return null;
         }
     }
 }

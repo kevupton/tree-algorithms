@@ -8,7 +8,6 @@ namespace TreeAlgorithms
 {
     public class Node
     {
-        private Node parent = null;
         private Node left = null;
         private Node right = null;
 
@@ -46,31 +45,11 @@ namespace TreeAlgorithms
             }
         }
 
-        public bool HasParent
-        {
-            get
-            {
-                return parent != null;
-            }
-        }
-
         public int Value
         {
             get
             {
                 return value;
-            }
-        }
-
-        public Node Parent
-        {
-            get
-            {
-                return parent;
-            }
-            set
-            {
-                parent = value;
             }
         }
 
@@ -83,7 +62,6 @@ namespace TreeAlgorithms
             set
             {
                 left = value;
-                left.parent = this;
             }
         }
 
@@ -96,8 +74,13 @@ namespace TreeAlgorithms
             set
             {
                 right = value;
-                right.parent = this;
             }
+        }
+
+        public void SwapChild (Node child, Node with)
+        {
+            if (child == left) Left = with;
+            if (child == right) Right = with;
         }
     }
 }
